@@ -83,7 +83,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
   </ul>
 </nav>
 
@@ -125,6 +125,11 @@
           <span class="site-state-item-count">1</span>
           <span class="site-state-item-name">posts</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
@@ -178,7 +183,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2024-01-28 19:40:22" itemprop="dateCreated datePublished" datetime="2024-01-28T19:40:22+08:00">2024-01-28</time>
+      <time title="Created: 2024-01-28 20:57:44" itemprop="dateCreated datePublished" datetime="2024-01-28T20:57:44+08:00">2024-01-28</time>
     </span>
 
   
@@ -191,7 +196,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>使用Github Actions自动部署Hexo博客，可能会遇到<code>hexo s</code>本地服务器正常，<code>hexo deploy</code>部署后，访问远程页面却未更新的情况。</p>
+          <p>使用Github Actions自动部署Hexo博客，可能会遇到<code>hexo s</code>后在本地服务器显示正常，<code>hexo deploy</code>部署后，访问远程页面却未更新的情况。</p>
 <p>Github Actions通过事件触发自动部署的工作流程，如果没有正确配置YAML文件，就无法顺利触发Github Actions。</p>
           <!--noindex-->
             <div class="post-button">
