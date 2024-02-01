@@ -2603,10 +2603,10 @@ header.header {
   }
 }
 body {
-  background: url("../images/Background-Dawn.jpg");
+  background: url("../images/Background-Night.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: contain;
+  background-size: cover;
   background-position: center;
 }
 :root {
