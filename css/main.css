@@ -1633,6 +1633,9 @@ pre code {
   margin-top: 40px;
   text-align: center;
 }
+.use-motion .collection-header {
+  visibility: hidden;
+}
 .posts-collapse .post-content {
   margin-bottom: 35px;
   margin-left: 35px;
@@ -2444,7 +2447,6 @@ header.header {
   color: var(--text-color);
   margin-top: 12px;
   max-height: calc(100vh - 24px);
-  visibility: hidden;
 }
 .site-state-item {
   padding: 0 10px;
