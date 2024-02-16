@@ -2586,7 +2586,7 @@ header.header {
   }
 }
 body {
-  background: url("../images/Background.jpg");
+  background: url("../images/Background.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
