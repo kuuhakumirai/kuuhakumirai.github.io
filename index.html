@@ -122,13 +122,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">1</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -154,7 +154,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/2024/02/04/GetSizeDelta-OnStart/">
+    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/2025/06/01/Drags-can-only/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -172,7 +172,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/02/04/GetSizeDelta-OnStart/" class="post-title-link" itemprop="url">Unity RectTransform.sizeDelta在Start内返回0</a>
+          <a href="/2025/06/01/Drags-can-only/" class="post-title-link" itemprop="url">Drags can only be started from MouseDown or MouseDrag events</a>
         </h2>
 
         <div class="post-meta-container">
@@ -183,7 +183,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2024-02-04 14:15:01" itemprop="dateCreated datePublished" datetime="2024-02-04T14:15:01+08:00">2024-02-04</time>
+      <time title="Created: 2025-06-01 22:12:31" itemprop="dateCreated datePublished" datetime="2025-06-01T22:12:31+08:00">2025-06-01</time>
     </span>
 
   
@@ -196,93 +196,46 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>在Awake和Start内获取RectTransform.sizeDelta，由于画布不是最新状态，会返回0值。</p>
-<p>要想获取正确的值，可以采用以下几种办法：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/02/04/GetSizeDelta-OnStart/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
+          <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>为编辑器创建鼠标拖拽事件时，如果判定方式是点击鼠标左键：</p>
+<pre><code>private void OnMouseDown(MouseDownEvent evt)
+&#123;
+    if (evt.button == (int)MouseButton.LeftMouse)
+    &#123;
+        DragAndDrop.PrepareStartDrag();
+        DragAndDrop.SetGenericData(&quot;BlackboardField&quot;, this);
+        DragAndDrop.StartDrag(&quot;Dragging Blackboard Field.&quot;);
+        evt.StopPropagation();
+    &#125;
+&#125;
+</code></pre>
+<p>会出现报错：</p>
+<blockquote>
+<p>Drags can only be started from MouseDown or MouseDrag events.</p>
+</blockquote>
+<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>看一下编辑器源码：</p>
+<pre><code>// Start a drag operation.
+public static void StartDrag(string title)
+&#123;
+    if (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag)
+    &#123;
+        StartDrag_Internal(title);
+    &#125;
+    else
+    &#123;
+        Debug.LogError(&quot;Drags can only be started from MouseDown or MouseDrag events&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>谜底就在谜面上，把判定的内容从“点击鼠标左键”改成“按下鼠标事件”即可。</p>
+<p>把：</p>
+<pre><code>if (evt.button == (int)MouseButton.LeftMouse)
+</code></pre>
+<p>替换为：</p>
+<pre><code>if (Event.current.type == EventType.MouseDrag)
+</code></pre>
+<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/DragAndDrop.bindings.cs">DragAndDrop.bindings</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.1/Documentation/ScriptReference/EventType.MouseDown.html">EventType.MouseDown</a></p>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/2024/01/28/Github-Actions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="KuuhakuMirai">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Memo of the Stars">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Memo of the Stars">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/01/28/Github-Actions/" class="post-title-link" itemprop="url">Hexo + Github Actions 部署远程页面不更新问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-01-28 20:57:44" itemprop="dateCreated datePublished" datetime="2024-01-28T20:57:44+08:00">2024-01-28</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>使用Github Actions自动部署Hexo博客，可能会遇到<code>hexo s</code>后在本地服务器显示正常，<code>hexo deploy</code>部署后，访问远程页面却未更新的情况。</p>
-<p>Github Actions通过事件触发自动部署的工作流程，如果没有正确配置YAML文件，就无法顺利触发Github Actions。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/01/28/Github-Actions/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 
