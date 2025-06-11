@@ -122,7 +122,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -145,6 +145,81 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/2025/06/12/TMP-white-blocks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="KuuhakuMirai">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/12/TMP-white-blocks/" class="post-title-link" itemprop="url">升级到Unity6后TexhMeshPro文字变成白块</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-06-12 02:17:44" itemprop="dateCreated datePublished" datetime="2025-06-12T02:17:44+08:00">2025-06-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>使用Unity旧版本中创建的项目，将编辑器升级到Unity6后，TextMeshPro文字变成白块。</p>
+<img src="/2025/06/12/TMP-white-blocks/Example.png" class="">
+
+
+<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>TextMeshPro使用SDF Shader来渲染，新版本Shader文件计算粗体和缩放所使用的向量分量与旧版本不同。</p>
+<p>把材质使用的Shader文件中的<code>texcoord1.y</code>改成<code>texcoord0.z</code>即可。</p>
+<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.textmeshpro@4.0/manual/Shaders.html">TextMeshPro 4.0.0-pre.2</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
