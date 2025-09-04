@@ -155,85 +155,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/2025/08/29/Using-System-Text-Json/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="KuuhakuMirai">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Memo of the Stars">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Memo of the Stars">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/08/29/Using-System-Text-Json/" class="post-title-link" itemprop="url">在Unity中使用System.Text.Json</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2025-08-29 03:27:42" itemprop="dateCreated datePublished" datetime="2025-08-29T03:27:42+08:00">2025-08-29</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在Plugins文件夹导入以下dll：</p>
-<ul>
-<li>Microsoft.Bcl.AsyncInterfaces</li>
-<li>System.Buffers</li>
-<li>System.Memory</li>
-<li>System.Numerics.Vectors</li>
-<li>System.Runtime.CompilerServices.Unsafe</li>
-<li>System.Text.Encodings.Web</li>
-<li>System.Text.Json</li>
-<li>System.Threading.Tasks.Extensions</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/2025/08/28/Using-Init-Keyword/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -279,6 +200,85 @@
           <p>Unity所使用的C#版本过低，但引入一段代码，就能为属性应用Init关键字。</p>
 <p><code>CompilerServices.cs</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">namespace System.Runtime.CompilerServices</span><br><span class="line">&#123;</span><br><span class="line">    public static class IsExternalInit</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //</span><br><span class="line">    // Summary:</span><br><span class="line">    //     Specifies that a type has required members or that a member is required.</span><br><span class="line">    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false, Inherited = false)]</span><br><span class="line">    public sealed class RequiredMemberAttribute : Attribute</span><br><span class="line">    &#123;</span><br><span class="line">        //</span><br><span class="line">        // Summary:</span><br><span class="line">        //     Initializes a System.Runtime.CompilerServices.RequiredMemberAttribute instance</span><br><span class="line">        //     with default values.</span><br><span class="line">        public RequiredMemberAttribute() &#123; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// Indicates that compiler support for a particular feature is required for the location where this attribute is applied.</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]</span><br><span class="line">    public sealed class CompilerFeatureRequiredAttribute : Attribute</span><br><span class="line">    &#123;</span><br><span class="line">        public CompilerFeatureRequiredAttribute(string featureName)</span><br><span class="line">        &#123;</span><br><span class="line">            FeatureName = featureName;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// The name of the compiler feature.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        public string FeatureName &#123; get; &#125;</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// If true, the compiler can choose to allow access to the location where this attribute is applied if it does not understand &lt;see cref=&quot;FeatureName&quot;/&gt;.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        public bool IsOptional &#123; get; init; &#125;</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// The &lt;see cref=&quot;FeatureName&quot;/&gt; used for the ref structs C# feature.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        public const string RefStructs = nameof(RefStructs);</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// The &lt;see cref=&quot;FeatureName&quot;/&gt; used for the required members C# feature.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        public const string RequiredMembers = nameof(RequiredMembers);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/2025/08/27/Using-System-Text-Json/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="KuuhakuMirai">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/08/27/Using-System-Text-Json/" class="post-title-link" itemprop="url">在Unity中使用System.Text.Json</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-08-27 00:00:00" itemprop="dateCreated datePublished" datetime="2025-08-27T00:00:00+08:00">2025-08-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在Plugins文件夹导入以下dll：</p>
+<ul>
+<li>Microsoft.Bcl.AsyncInterfaces</li>
+<li>System.Buffers</li>
+<li>System.Memory</li>
+<li>System.Numerics.Vectors</li>
+<li>System.Runtime.CompilerServices.Unsafe</li>
+<li>System.Text.Encodings.Web</li>
+<li>System.Text.Json</li>
+<li>System.Threading.Tasks.Extensions</li>
+</ul>
 
       
     </div>
