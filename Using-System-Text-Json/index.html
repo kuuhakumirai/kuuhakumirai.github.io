@@ -20,29 +20,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"kuuhakumirai.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":null,"post_block":null,"post_header":null,"post_body":null,"coll_header":null,"sidebar":"fadeInDown"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="问题为编辑器创建鼠标拖拽事件时，如果判定方式是点击鼠标左键： private void OnMouseDown(MouseDownEvent evt) &#123;     if (evt.button &#x3D;&#x3D; (int)MouseButton.LeftMouse)     &#123;         DragAndDrop.PrepareStartDrag();         DragAndD">
+    <meta name="description" content="在Plugins文件夹导入以下dll：  Microsoft.Bcl.AsyncInterfaces System.Buffers System.Memory System.Numerics.Vectors System.Runtime.CompilerServices.Unsafe System.Text.Encodings.Web System.Text.Json System.Threadi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Drags can only be started from MouseDown or MouseDrag events">
-<meta property="og:url" content="https://kuuhakumirai.github.io/2025/06/01/Drags-can-only/index.html">
+<meta property="og:title" content="在Unity中使用System.Text.Json">
+<meta property="og:url" content="https://kuuhakumirai.github.io/Using-System-Text-Json/index.html">
 <meta property="og:site_name" content="Memo of the Stars">
-<meta property="og:description" content="问题为编辑器创建鼠标拖拽事件时，如果判定方式是点击鼠标左键： private void OnMouseDown(MouseDownEvent evt) &#123;     if (evt.button &#x3D;&#x3D; (int)MouseButton.LeftMouse)     &#123;         DragAndDrop.PrepareStartDrag();         DragAndD">
+<meta property="og:description" content="在Plugins文件夹导入以下dll：  Microsoft.Bcl.AsyncInterfaces System.Buffers System.Memory System.Numerics.Vectors System.Runtime.CompilerServices.Unsafe System.Text.Encodings.Web System.Text.Json System.Threadi">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-06-01T14:12:31.660Z">
-<meta property="article:modified_time" content="2025-06-01T14:12:31.660Z">
+<meta property="article:published_time" content="2025-08-27T12:13:28.000Z">
+<meta property="article:modified_time" content="2025-08-27T12:13:28.000Z">
 <meta property="article:author" content="KuuhakuMirai">
 <meta property="article:tag" content="Unity">
-<meta property="article:tag" content="UnityEditor">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://kuuhakumirai.github.io/2025/06/01/Drags-can-only/">
+<link rel="canonical" href="https://kuuhakumirai.github.io/Using-System-Text-Json/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://kuuhakumirai.github.io/2025/06/01/Drags-can-only/","path":"2025/06/01/Drags-can-only/","title":"Drags can only be started from MouseDown or MouseDrag events"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://kuuhakumirai.github.io/Using-System-Text-Json/","path":"Using-System-Text-Json/","title":"在Unity中使用System.Text.Json"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Drags can only be started from MouseDown or MouseDrag events | Memo of the Stars</title>
+<title>在Unity中使用System.Text.Json | Memo of the Stars</title>
   
 
 
@@ -102,7 +101,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -115,7 +114,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">解决方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E9%93%BE%E6%8E%A5"><span class="nav-number">3.</span> <span class="nav-text">文档链接</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -130,7 +128,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -163,7 +161,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/2025/06/01/Drags-can-only/">
+    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/Using-System-Text-Json/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -176,12 +174,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Drags can only be started from MouseDown or MouseDrag events | Memo of the Stars">
+      <meta itemprop="name" content="在Unity中使用System.Text.Json | Memo of the Stars">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Drags can only be started from MouseDown or MouseDrag events
+          在Unity中使用System.Text.Json
         </h1>
 
         <div class="post-meta-container">
@@ -192,7 +190,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2025-06-01 22:12:31" itemprop="dateCreated datePublished" datetime="2025-06-01T22:12:31+08:00">2025-06-01</time>
+      <time title="Created: 2025-08-27 20:13:28" itemprop="dateCreated datePublished" datetime="2025-08-27T20:13:28+08:00">2025-08-27</time>
     </span>
 
   
@@ -204,45 +202,17 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>为编辑器创建鼠标拖拽事件时，如果判定方式是点击鼠标左键：</p>
-<pre><code>private void OnMouseDown(MouseDownEvent evt)
-&#123;
-    if (evt.button == (int)MouseButton.LeftMouse)
-    &#123;
-        DragAndDrop.PrepareStartDrag();
-        DragAndDrop.SetGenericData(&quot;BlackboardField&quot;, this);
-        DragAndDrop.StartDrag(&quot;Dragging Blackboard Field.&quot;);
-        evt.StopPropagation();
-    &#125;
-&#125;
-</code></pre>
-<p>会出现报错：</p>
-<blockquote>
-<p>Drags can only be started from MouseDown or MouseDrag events.</p>
-</blockquote>
-<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>看一下编辑器源码：</p>
-<pre><code>// Start a drag operation.
-public static void StartDrag(string title)
-&#123;
-    if (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag)
-    &#123;
-        StartDrag_Internal(title);
-    &#125;
-    else
-    &#123;
-        Debug.LogError(&quot;Drags can only be started from MouseDown or MouseDrag events&quot;);
-    &#125;
-&#125;
-</code></pre>
-<p>谜底就在谜面上，把判定的内容从“点击鼠标左键”改成“按下鼠标事件”即可。</p>
-<p>把：</p>
-<pre><code>if (evt.button == (int)MouseButton.LeftMouse)
-</code></pre>
-<p>替换为：</p>
-<pre><code>if (Event.current.type == EventType.MouseDrag)
-</code></pre>
-<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/DragAndDrop.bindings.cs">DragAndDrop.bindings</a></p>
-<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.1/Documentation/ScriptReference/EventType.MouseDown.html">EventType.MouseDown</a></p>
+    <div class="post-body" itemprop="articleBody"><p>在Plugins文件夹导入以下dll：</p>
+<ul>
+<li>Microsoft.Bcl.AsyncInterfaces</li>
+<li>System.Buffers</li>
+<li>System.Memory</li>
+<li>System.Numerics.Vectors</li>
+<li>System.Runtime.CompilerServices.Unsafe</li>
+<li>System.Text.Encodings.Web</li>
+<li>System.Text.Json</li>
+<li>System.Threading.Tasks.Extensions</li>
+</ul>
 
     </div>
 
@@ -253,17 +223,19 @@ public static void StartDrag(string title)
     <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Unity/" rel="tag"># Unity</a>
-              <a href="/tags/UnityEditor/" rel="tag"># UnityEditor</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/TMP-white-blocks/" rel="prev" title="升级到Unity6后TexhMeshPro文字变成白块">
+                  <i class="fa fa-angle-left"></i> 升级到Unity6后TexhMeshPro文字变成白块
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2025/06/12/TMP-white-blocks/" rel="next" title="升级到Unity6后TexhMeshPro文字变成白块">
-                  升级到Unity6后TexhMeshPro文字变成白块 <i class="fa fa-angle-right"></i>
+                <a href="/Using-Init-Keyword/" rel="next" title="在Unity中使用Init关键字">
+                  在Unity中使用Init关键字 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>

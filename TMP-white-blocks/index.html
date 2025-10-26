@@ -20,23 +20,31 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"kuuhakumirai.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":null,"post_block":null,"post_header":null,"post_body":null,"coll_header":null,"sidebar":"fadeInDown"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Memo of the Stars">
-<meta property="og:url" content="https://kuuhakumirai.github.io/archives/2025/08/index.html">
+    <meta name="description" content="问题使用Unity旧版本中创建的项目，将编辑器升级到Unity6后，TextMeshPro文字变成白块。    解决方式TextMeshPro使用SDF Shader来渲染，新版本Shader文件计算粗体和缩放所使用的向量分量与旧版本不同。 把材质使用的Shader文件中的texcoord1.y改成texcoord0.z即可。 文档链接TextMeshPro 4.0.0-pre.2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="升级到Unity6后TexhMeshPro文字变成白块">
+<meta property="og:url" content="https://kuuhakumirai.github.io/TMP-white-blocks/index.html">
 <meta property="og:site_name" content="Memo of the Stars">
+<meta property="og:description" content="问题使用Unity旧版本中创建的项目，将编辑器升级到Unity6后，TextMeshPro文字变成白块。    解决方式TextMeshPro使用SDF Shader来渲染，新版本Shader文件计算粗体和缩放所使用的向量分量与旧版本不同。 把材质使用的Shader文件中的texcoord1.y改成texcoord0.z即可。 文档链接TextMeshPro 4.0.0-pre.2">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kuuhakumirai.github.io/TMP-white-blocks/Example.png">
+<meta property="article:published_time" content="2025-06-11T18:17:44.498Z">
+<meta property="article:modified_time" content="2025-06-11T18:17:44.498Z">
 <meta property="article:author" content="KuuhakuMirai">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="UnityEditor">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kuuhakumirai.github.io/TMP-white-blocks/Example.png">
 
 
-<link rel="canonical" href="https://kuuhakumirai.github.io/archives/2025/08/">
+<link rel="canonical" href="https://kuuhakumirai.github.io/TMP-white-blocks/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"en","comments":"","permalink":"","path":"archives/2025/08/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://kuuhakumirai.github.io/TMP-white-blocks/","path":"TMP-white-blocks/","title":"升级到Unity6后TexhMeshPro文字变成白块"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Archive | Memo of the Stars</title>
+<title>升级到Unity6后TexhMeshPro文字变成白块 | Memo of the Stars</title>
   
 
 
@@ -69,7 +77,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Memo of the Stars</h1>
+      <p class="site-title">Memo of the Stars</p>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">This is the path you should walk, they say.</p>
@@ -96,7 +104,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -109,6 +117,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">解决方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E9%93%BE%E6%8E%A5"><span class="nav-number">3.</span> <span class="nav-text">文档链接</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -145,69 +154,100 @@
 
     </div>
 
-    <div class="main-inner archive posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 5 posts in total. Keep on posting.</span>
-      </div>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2025</span>
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/TMP-white-blocks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="KuuhakuMirai">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="升级到Unity6后TexhMeshPro文字变成白块 | Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          升级到Unity6后TexhMeshPro文字变成白块
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-06-12 02:17:44" itemprop="dateCreated datePublished" datetime="2025-06-12T02:17:44+08:00">2025-06-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>使用Unity旧版本中创建的项目，将编辑器升级到Unity6后，TextMeshPro文字变成白块。</p>
+<img src="/TMP-white-blocks/Example.png" class="">
+
+
+<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>TextMeshPro使用SDF Shader来渲染，新版本Shader文件计算粗体和缩放所使用的向量分量与旧版本不同。</p>
+<p>把材质使用的Shader文件中的<code>texcoord1.y</code>改成<code>texcoord0.z</code>即可。</p>
+<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.textmeshpro@4.0/manual/Shaders.html">TextMeshPro 4.0.0-pre.2</a></p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-08-28T03:00:22+08:00"
-              content="2025-08-28">
-          08-28
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-        <a class="post-title-link" href="/Using-Init-Keyword/" itemprop="url">
-          <span itemprop="name">在Unity中使用Init关键字</span>
-        </a>
-      </div>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+              <a href="/tags/UnityEditor/" rel="tag"># UnityEditor</a>
+          </div>
 
-      
-    </header>
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Drags-can-only/" rel="prev" title="Drags can only be started from MouseDown or MouseDrag events">
+                  <i class="fa fa-angle-left"></i> Drags can only be started from MouseDown or MouseDrag events
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Using-System-Text-Json/" rel="next" title="在Unity中使用System.Text.Json">
+                  在Unity中使用System.Text.Json <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-08-27T20:13:28+08:00"
-              content="2025-08-27">
-          08-27
-        </time>
-      </div>
-
-      <div class="post-title">
-        <a class="post-title-link" href="/Using-System-Text-Json/" itemprop="url">
-          <span itemprop="name">在Unity中使用System.Text.Json</span>
-        </a>
-      </div>
-
-      
-    </header>
-  </article>
+</div>
 
 
-    </div>
-  </div>
-  
-  
-  
+
+
+
 
 </div>
   </main>
