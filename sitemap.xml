@@ -2,9 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://kuuhakumirai.github.io/Save-As-UTF8/</loc>
+    <loc>https://kuuhakumirai.github.io/TMP-white-blocks/</loc>
     
-    <lastmod>2025-10-26</lastmod>
+    <lastmod>2025-10-29</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -13,7 +13,25 @@
   <url>
     <loc>https://kuuhakumirai.github.io/Using-Init-Keyword/</loc>
     
-    <lastmod>2025-08-27</lastmod>
+    <lastmod>2025-10-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kuuhakumirai.github.io/Drags-can-only/</loc>
+    
+    <lastmod>2025-10-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kuuhakumirai.github.io/Save-As-UTF8/</loc>
+    
+    <lastmod>2025-10-29</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -23,24 +41,6 @@
     <loc>https://kuuhakumirai.github.io/Using-System-Text-Json/</loc>
     
     <lastmod>2025-08-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://kuuhakumirai.github.io/TMP-white-blocks/</loc>
-    
-    <lastmod>2025-06-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://kuuhakumirai.github.io/Drags-can-only/</loc>
-    
-    <lastmod>2025-06-01</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -76,7 +76,7 @@
 
   <url>
     <loc>https://kuuhakumirai.github.io/</loc>
-    <lastmod>2025-10-26</lastmod>
+    <lastmod>2025-10-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -84,14 +84,14 @@
   
   <url>
     <loc>https://kuuhakumirai.github.io/tags/Unity/</loc>
-    <lastmod>2025-10-26</lastmod>
+    <lastmod>2025-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://kuuhakumirai.github.io/tags/UnityEditor/</loc>
-    <lastmod>2025-10-26</lastmod>
+    <lastmod>2025-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

@@ -155,7 +155,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/Save-As-UTF8/">
+    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/TMP-white-blocks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -173,7 +173,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/Save-As-UTF8/" class="post-title-link" itemprop="url">CS文件编码批量转换为UTF-8 / 以UTF-8保存</a>
+          <a href="/TMP-white-blocks/" class="post-title-link" itemprop="url">升级到Unity6后TexhMeshPro文字变成白块</a>
         </h2>
 
         <div class="post-meta-container">
@@ -184,7 +184,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2025-10-26 23:32:37" itemprop="dateCreated datePublished" datetime="2025-10-26T23:32:37+08:00">2025-10-26</time>
+      <time title="Created: 2025-10-29 21:03:32" itemprop="dateCreated datePublished" datetime="2025-10-29T21:03:32+08:00">2025-10-29</time>
     </span>
 
   
@@ -197,35 +197,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>突然发现项目里CS文件的编码是GBK，文件里的中文字符在Inspector上也显示为乱码。</p>
-<p>于是用C#写一个工具，编译后丢到Assets目录里，批量转换。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">using System.Text;</span><br><span class="line"></span><br><span class="line">string path = Directory.GetCurrentDirectory();</span><br><span class="line"></span><br><span class="line">string[] filedir = Directory.GetFiles(path, &quot;*.cs&quot;, SearchOption.AllDirectories);</span><br><span class="line"></span><br><span class="line">foreach (var item in filedir)</span><br><span class="line">&#123;</span><br><span class="line">    string content = File.ReadAllText(item, Encoding.Default);</span><br><span class="line">    File.WriteAllText(item, content, Encoding.UTF8);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(&quot;Done!&quot;);</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+          <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>使用Unity旧版本中创建的项目，将编辑器升级到Unity6后，TextMeshPro文字变成白块。</p>
+<img src="/TMP-white-blocks/Example.png" class="">
 
-<p>然而从Unity创建CS文件，文件的编码格式仍然是GBK。那么就要修改设置，以UTF-8的编码保存。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-修改保存选项"><a href="#1-修改保存选项" class="headerlink" title="1. 修改保存选项"></a>1. 修改保存选项</h3><p>编辑 &gt; 高级 &gt; 设置编码 &gt; 保存时使用编码</p>
-<h3 id="2-设置默认编码"><a href="#2-设置默认编码" class="headerlink" title="2. 设置默认编码"></a>2. 设置默认编码</h3><p>根据Visual Studio IDE 文档：</p>
-<blockquote>
-<p>从 Visual Studio 2022 版本 17.13 预览版 1 开始，可以设置用于保存文件的默认编码。</p>
-<p>若要设置默认值，请选择 工具 &gt; 选项 &gt; 环境，文档。 接下来，选择 “保存具有特定编码的文件”，然后选择所需的编码作为默认值。</p>
-</blockquote>
-<h3 id="3-创建后以UTF-8保存"><a href="#3-创建后以UTF-8保存" class="headerlink" title="3. 创建后以UTF-8保存"></a>3. 创建后以UTF-8保存</h3><p>Unity有一个类叫做<code>AssetModificationProcessor</code>，根据官方说明，这个类可以hook到序列化资产和场景的保存里。</p>
-<p>这个类有四个主要的函数：<code>OnWillCreateAsset</code>，<code>OnWillDeleteAsset</code>，<code>OnWillMoveAsset</code>，<code>OnWillSaveAssets</code>。</p>
-<p>其中，当Unity要创建一个还没有导入的资产时，会调用<code>OnWillCreateAsset</code>函数。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor</span><br><span class="line">&#123;</span><br><span class="line">    static void OnWillCreateAsset(string assetName)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(&quot;OnWillCreateAsset is being called with the following asset: &quot; + assetName + &quot;.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>其中，<code>assetName</code>是资产的相对路径。</p>
-<p>到这里思路就清晰了：创建CS文件后，用<code>File</code>类读取文件，再以UTF-8格式保存。</p>
-<p>但是，如果在这个函数里使用<code>File</code>类，传入<code>assetName</code>，对创建的CS文件进行读取，会提示错误：<code>FileNotFoundException: Could not find file &quot;xxx.cs&quot;</code></p>
-<p>这是因为，这个函数是On<strong>Will</strong>CreateAsset。</p>
-<p>在Unity里，还有一个类叫做<code>AssetPostprocessor</code>，根据官方说明，这个类允许hook到导入pipeline，在导入资产之前或之后运行脚本。顾名思义，它是“资产的后处理”。</p>
-<p>这个类里有一个函数<code>OnPostprocessAllAssets</code>，在导入任意数量的资产后（Asset进度条到达终点时），此函数被调用。</p>
-<p>那么可以尝试在<code>OnWillCreateAsset</code>中标记刚刚创建的CS文件，在<code>OnPostprocessAllAssets</code>中读写文件。</p>
-<p>代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">public class ScriptModificationProcessor : AssetModificationProcessor</span><br><span class="line">&#123;</span><br><span class="line">    public static void OnWillCreateAsset(string assetName)</span><br><span class="line">    &#123;</span><br><span class="line">        if (assetName.EndsWith(&quot;.cs&quot;))</span><br><span class="line">        &#123;</span><br><span class="line">            if (!ScriptPostprocessor.s_CreatedScripts.Contains(assetName))</span><br><span class="line">            &#123;</span><br><span class="line">                ScriptPostprocessor.s_CreatedScripts.Add(assetName);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ScriptPostprocessor : AssetPostprocessor</span><br><span class="line">&#123;</span><br><span class="line">    public static List&lt;string&gt; s_CreatedScripts = new();</span><br><span class="line"></span><br><span class="line">    private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)</span><br><span class="line">    &#123;</span><br><span class="line">        foreach (var importedAsset in importedAssets)</span><br><span class="line">        &#123;</span><br><span class="line">            if (s_CreatedScripts.Contains(importedAsset))</span><br><span class="line">            &#123;</span><br><span class="line">                string content = File.ReadAllText(importedAsset, Encoding.Default);</span><br><span class="line">                File.WriteAllText(importedAsset, content, Encoding.UTF8);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/visualstudio/ide/how-to-save-and-open-files-with-encoding?view=vs-2022">使用编码保存和打开文件</a></p>
-<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/2022.3/Documentation/ScriptReference/AssetModificationProcessor.OnWillCreateAsset.html">AssetModificationProcessor.OnWillCreateAsset</a></p>
-<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/2022.3/Documentation/ScriptReference/AssetPostprocessor.OnPostprocessAllAssets.html">AssetPostprocessor.OnPostprocessAllAssets</a></p>
+<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>TextMeshPro使用SDF Shader来渲染，新版本Shader文件计算粗体和缩放所使用的向量分量与旧版本不同。</p>
+<p>把材质使用的Shader文件中的<code>texcoord1.y</code>改成<code>texcoord0.z</code>即可。</p>
+<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.textmeshpro@4.0/manual/Shaders.html">TextMeshPro 4.0.0-pre.2</a></p>
 
       
     </div>
@@ -281,7 +259,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2025-08-28 03:00:22" itemprop="dateCreated datePublished" datetime="2025-08-28T03:00:22+08:00">2025-08-28</time>
+      <time title="Created: 2025-10-29 21:03:32" itemprop="dateCreated datePublished" datetime="2025-10-29T21:03:32+08:00">2025-10-29</time>
     </span>
 
   
@@ -297,6 +275,210 @@
           <p>Unity所使用的C#版本过低，但引入一段代码，就能为属性应用Init关键字。</p>
 <p><code>CompilerServices.cs</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">namespace System.Runtime.CompilerServices</span><br><span class="line">&#123;</span><br><span class="line">    public static class IsExternalInit</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //</span><br><span class="line">    // Summary:</span><br><span class="line">    //     Specifies that a type has required members or that a member is required.</span><br><span class="line">    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false, Inherited = false)]</span><br><span class="line">    public sealed class RequiredMemberAttribute : Attribute</span><br><span class="line">    &#123;</span><br><span class="line">        //</span><br><span class="line">        // Summary:</span><br><span class="line">        //     Initializes a System.Runtime.CompilerServices.RequiredMemberAttribute instance</span><br><span class="line">        //     with default values.</span><br><span class="line">        public RequiredMemberAttribute() &#123; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// Indicates that compiler support for a particular feature is required for the location where this attribute is applied.</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]</span><br><span class="line">    public sealed class CompilerFeatureRequiredAttribute : Attribute</span><br><span class="line">    &#123;</span><br><span class="line">        public CompilerFeatureRequiredAttribute(string featureName)</span><br><span class="line">        &#123;</span><br><span class="line">            FeatureName = featureName;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// The name of the compiler feature.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        public string FeatureName &#123; get; &#125;</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// If true, the compiler can choose to allow access to the location where this attribute is applied if it does not understand &lt;see cref=&quot;FeatureName&quot;/&gt;.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        public bool IsOptional &#123; get; init; &#125;</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// The &lt;see cref=&quot;FeatureName&quot;/&gt; used for the ref structs C# feature.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        public const string RefStructs = nameof(RefStructs);</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// The &lt;see cref=&quot;FeatureName&quot;/&gt; used for the required members C# feature.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        public const string RequiredMembers = nameof(RequiredMembers);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/Drags-can-only/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="KuuhakuMirai">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Drags-can-only/" class="post-title-link" itemprop="url">Drags can only be started from MouseDown or MouseDrag events</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-10-29 21:03:32" itemprop="dateCreated datePublished" datetime="2025-10-29T21:03:32+08:00">2025-10-29</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>为编辑器创建鼠标拖拽事件时，如果判定方式是点击鼠标左键：</p>
+<pre><code>private void OnMouseDown(MouseDownEvent evt)
+&#123;
+    if (evt.button == (int)MouseButton.LeftMouse)
+    &#123;
+        DragAndDrop.PrepareStartDrag();
+        DragAndDrop.SetGenericData(&quot;BlackboardField&quot;, this);
+        DragAndDrop.StartDrag(&quot;Dragging Blackboard Field.&quot;);
+        evt.StopPropagation();
+    &#125;
+&#125;
+</code></pre>
+<p>会出现报错：</p>
+<blockquote>
+<p>Drags can only be started from MouseDown or MouseDrag events.</p>
+</blockquote>
+<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>看一下编辑器源码：</p>
+<pre><code>// Start a drag operation.
+public static void StartDrag(string title)
+&#123;
+    if (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag)
+    &#123;
+        StartDrag_Internal(title);
+    &#125;
+    else
+    &#123;
+        Debug.LogError(&quot;Drags can only be started from MouseDown or MouseDrag events&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>谜底就在谜面上，把判定的内容从“点击鼠标左键”改成“按下鼠标事件”即可。</p>
+<p>把：</p>
+<pre><code>if (evt.button == (int)MouseButton.LeftMouse)
+</code></pre>
+<p>替换为：</p>
+<pre><code>if (Event.current.type == EventType.MouseDrag)
+</code></pre>
+<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/DragAndDrop.bindings.cs">DragAndDrop.bindings</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.1/Documentation/ScriptReference/EventType.MouseDown.html">EventType.MouseDown</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/Save-As-UTF8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="KuuhakuMirai">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Save-As-UTF8/" class="post-title-link" itemprop="url">CS文件编码批量转换为UTF-8 / 以UTF-8保存</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-10-29 21:03:23" itemprop="dateCreated datePublished" datetime="2025-10-29T21:03:23+08:00">2025-10-29</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>突然发现项目里CS文件的编码是GBK，文件里的中文字符在Inspector上也显示为乱码。</p>
+<p>于是用C#写一个工具，编译后丢到Assets目录里，批量转换。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">using System.Text;</span><br><span class="line"></span><br><span class="line">string path = Directory.GetCurrentDirectory();</span><br><span class="line"></span><br><span class="line">string[] filedir = Directory.GetFiles(path, &quot;*.cs&quot;, SearchOption.AllDirectories);</span><br><span class="line"></span><br><span class="line">foreach (var item in filedir)</span><br><span class="line">&#123;</span><br><span class="line">    string content = File.ReadAllText(item, Encoding.Default);</span><br><span class="line">    File.WriteAllText(item, content, Encoding.UTF8);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(&quot;Done!&quot;);</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<p>然而从Unity创建CS文件，文件的编码格式仍然是GBK。那么就要修改设置，以UTF-8的编码保存。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-修改保存选项"><a href="#1-修改保存选项" class="headerlink" title="1. 修改保存选项"></a>1. 修改保存选项</h3><p>编辑 &gt; 高级 &gt; 设置编码 &gt; 保存时使用编码</p>
+<h3 id="2-设置默认编码"><a href="#2-设置默认编码" class="headerlink" title="2. 设置默认编码"></a>2. 设置默认编码</h3><p>根据Visual Studio IDE 文档：</p>
+<blockquote>
+<p>从 Visual Studio 2022 版本 17.13 预览版 1 开始，可以设置用于保存文件的默认编码。</p>
+<p>若要设置默认值，请选择 工具 &gt; 选项 &gt; 环境，文档。 接下来，选择 “保存具有特定编码的文件”，然后选择所需的编码作为默认值。</p>
+</blockquote>
+<h3 id="3-创建后以UTF-8保存"><a href="#3-创建后以UTF-8保存" class="headerlink" title="3. 创建后以UTF-8保存"></a>3. 创建后以UTF-8保存</h3><p>Unity有一个类叫做<code>AssetModificationProcessor</code>，根据官方说明，这个类可以hook到序列化资产和场景的保存里。</p>
+<p>这个类有四个主要的函数：<code>OnWillCreateAsset</code>，<code>OnWillDeleteAsset</code>，<code>OnWillMoveAsset</code>，<code>OnWillSaveAssets</code>。</p>
+<p>其中，当Unity要创建一个还没有导入的资产时，会调用<code>OnWillCreateAsset</code>函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor</span><br><span class="line">&#123;</span><br><span class="line">    static void OnWillCreateAsset(string assetName)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(&quot;OnWillCreateAsset is being called with the following asset: &quot; + assetName + &quot;.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>assetName</code>是资产的相对路径。</p>
+<p>到这里思路就清晰了：创建CS文件后，用<code>File</code>类读取文件，再以UTF-8格式保存。</p>
+<p>但是，如果在这个函数里使用<code>File</code>类，传入<code>assetName</code>，对创建的CS文件进行读取，会提示错误：<code>FileNotFoundException: Could not find file &quot;xxx.cs&quot;</code></p>
+<p>这是因为，这个函数是On<strong>Will</strong>CreateAsset。</p>
+<p>在Unity里，还有一个类叫做<code>AssetPostprocessor</code>，根据官方说明，这个类允许hook到导入pipeline，在导入资产之前或之后运行脚本。顾名思义，它是“资产的后处理”。</p>
+<p>这个类里有一个函数<code>OnPostprocessAllAssets</code>，在导入任意数量的资产后（Asset进度条到达终点时），此函数被调用。</p>
+<p>那么可以尝试在<code>OnWillCreateAsset</code>中标记刚刚创建的CS文件，在<code>OnPostprocessAllAssets</code>中读写文件。</p>
+<p>代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">public class ScriptModificationProcessor : AssetModificationProcessor</span><br><span class="line">&#123;</span><br><span class="line">    public static void OnWillCreateAsset(string assetName)</span><br><span class="line">    &#123;</span><br><span class="line">        if (assetName.EndsWith(&quot;.cs&quot;))</span><br><span class="line">        &#123;</span><br><span class="line">            if (!ScriptPostprocessor.s_CreatedScripts.Contains(assetName))</span><br><span class="line">            &#123;</span><br><span class="line">                ScriptPostprocessor.s_CreatedScripts.Add(assetName);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ScriptPostprocessor : AssetPostprocessor</span><br><span class="line">&#123;</span><br><span class="line">    public static List&lt;string&gt; s_CreatedScripts = new();</span><br><span class="line"></span><br><span class="line">    private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)</span><br><span class="line">    &#123;</span><br><span class="line">        foreach (var importedAsset in importedAssets)</span><br><span class="line">        &#123;</span><br><span class="line">            if (s_CreatedScripts.Contains(importedAsset))</span><br><span class="line">            &#123;</span><br><span class="line">                string content = File.ReadAllText(importedAsset, Encoding.Default);</span><br><span class="line">                File.WriteAllText(importedAsset, content, Encoding.UTF8);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/visualstudio/ide/how-to-save-and-open-files-with-encoding?view=vs-2022">使用编码保存和打开文件</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/2022.3/Documentation/ScriptReference/AssetModificationProcessor.OnWillCreateAsset.html">AssetModificationProcessor.OnWillCreateAsset</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/2022.3/Documentation/ScriptReference/AssetPostprocessor.OnPostprocessAllAssets.html">AssetPostprocessor.OnPostprocessAllAssets</a></p>
 
       
     </div>
@@ -376,188 +558,6 @@
 <li>System.Text.Json</li>
 <li>System.Threading.Tasks.Extensions</li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/TMP-white-blocks/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="KuuhakuMirai">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Memo of the Stars">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Memo of the Stars">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/TMP-white-blocks/" class="post-title-link" itemprop="url">升级到Unity6后TexhMeshPro文字变成白块</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2025-06-12 02:17:44" itemprop="dateCreated datePublished" datetime="2025-06-12T02:17:44+08:00">2025-06-12</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>使用Unity旧版本中创建的项目，将编辑器升级到Unity6后，TextMeshPro文字变成白块。</p>
-<img src="/TMP-white-blocks/Example.png" class="">
-
-
-<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>TextMeshPro使用SDF Shader来渲染，新版本Shader文件计算粗体和缩放所使用的向量分量与旧版本不同。</p>
-<p>把材质使用的Shader文件中的<code>texcoord1.y</code>改成<code>texcoord0.z</code>即可。</p>
-<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.textmeshpro@4.0/manual/Shaders.html">TextMeshPro 4.0.0-pre.2</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/Drags-can-only/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="KuuhakuMirai">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Memo of the Stars">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Memo of the Stars">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/Drags-can-only/" class="post-title-link" itemprop="url">Drags can only be started from MouseDown or MouseDrag events</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2025-06-01 22:12:31" itemprop="dateCreated datePublished" datetime="2025-06-01T22:12:31+08:00">2025-06-01</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>为编辑器创建鼠标拖拽事件时，如果判定方式是点击鼠标左键：</p>
-<pre><code>private void OnMouseDown(MouseDownEvent evt)
-&#123;
-    if (evt.button == (int)MouseButton.LeftMouse)
-    &#123;
-        DragAndDrop.PrepareStartDrag();
-        DragAndDrop.SetGenericData(&quot;BlackboardField&quot;, this);
-        DragAndDrop.StartDrag(&quot;Dragging Blackboard Field.&quot;);
-        evt.StopPropagation();
-    &#125;
-&#125;
-</code></pre>
-<p>会出现报错：</p>
-<blockquote>
-<p>Drags can only be started from MouseDown or MouseDrag events.</p>
-</blockquote>
-<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>看一下编辑器源码：</p>
-<pre><code>// Start a drag operation.
-public static void StartDrag(string title)
-&#123;
-    if (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag)
-    &#123;
-        StartDrag_Internal(title);
-    &#125;
-    else
-    &#123;
-        Debug.LogError(&quot;Drags can only be started from MouseDown or MouseDrag events&quot;);
-    &#125;
-&#125;
-</code></pre>
-<p>谜底就在谜面上，把判定的内容从“点击鼠标左键”改成“按下鼠标事件”即可。</p>
-<p>把：</p>
-<pre><code>if (evt.button == (int)MouseButton.LeftMouse)
-</code></pre>
-<p>替换为：</p>
-<pre><code>if (Event.current.type == EventType.MouseDrag)
-</code></pre>
-<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/DragAndDrop.bindings.cs">DragAndDrop.bindings</a></p>
-<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/6000.1/Documentation/ScriptReference/EventType.MouseDown.html">EventType.MouseDown</a></p>
 
       
     </div>
