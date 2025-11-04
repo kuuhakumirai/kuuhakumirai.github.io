@@ -212,9 +212,9 @@
 </li>
 <li><p>获取Asset的<code>AddressableAssetEntry</code>，如果存在，则跳过当前循环；</p>
 </li>
-<li><p>根据path获取Asset所在文件夹名，检测是否存在同名的<code>AddressableAssetGroup</code>，如果不存在，则创建分组；</p>
+<li><p>根据path获取Asset所在文件夹名，检测是否存在同名的<code>AddressableAssetGroup</code>，如果不存在，则根据文件夹名创建分组；</p>
 </li>
-<li><p>使用<code>AddressableAssetSettings.CreateOrMoveEntry</code>函数创建Entry，并将Address设置为文件名，等同于Simplify Addressable Names；</p>
+<li><p>使用<code>AddressableAssetSettings.CreateOrMoveEntry</code>函数创建Entry，然后移动至对应的分组中，并将Address设置为文件名，等同于Simplify Addressable Names；</p>
 </li>
 <li><p>保存。</p>
 </li>
