@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="google-site-verification" content="2EOmH2vqAQToOSNCcEn_2fVtZ6AXK-8bGfc7LWLDCcU" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/32px-MENU_ItemIcon_03200.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32px-MENU_ItemIcon_03200.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16px-MENU_ItemIcon_03200.png">
+  <link rel="mask-icon" href="/images/ER_Icon_Key_Item_Great_Rune_Morgott.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"kuuhakumirai.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":null,"post_block":null,"post_header":null,"post_body":null,"coll_header":null,"sidebar":"fadeInDown"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="需求Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将SO列表化，预览内容，点击定位到对应SO文件。 思路参考RPG Maker Unite的数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ScriptableObject管理工具">
+<meta property="og:url" content="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/index.html">
+<meta property="og:site_name" content="Memo of the Stars">
+<meta property="og:description" content="需求Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将SO列表化，预览内容，点击定位到对应SO文件。 思路参考RPG Maker Unite的数据库">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-11-14T17:11:17.000Z">
+<meta property="article:modified_time" content="2025-11-14T17:11:17.000Z">
+<meta property="article:author" content="KuuhakuMirai">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="UnityEditor">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/","path":"ScriptableObject-Manage-Tool/","title":"ScriptableObject管理工具"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ScriptableObject管理工具 | Memo of the Stars</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Memo of the Stars</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">This is the path you should walk, they say.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E9%93%BE%E6%8E%A5"><span class="nav-number">4.</span> <span class="nav-text">文档链接</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="KuuhakuMirai"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">KuuhakuMirai</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="KuuhakuMirai">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ScriptableObject管理工具 | Memo of the Stars">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ScriptableObject管理工具
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-11-15 01:11:17" itemprop="dateCreated datePublished" datetime="2025-11-15T01:11:17+08:00">2025-11-15</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将SO列表化，预览内容，点击定位到对应SO文件。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>参考RPG Maker Unite的数据库样式：</p>
+
+
+<p>思路如图：</p>
+
+
+<p>要管理的SO的属性：Id, Name, Icon, Catalog, 其中Catalog有三个枚举值：Item, Weapon, Armor:</p>
+
+
+<p>折叠项显示：配置的Catalog，SO根据Catalog分类；</p>
+<p>菜单项显示：SO的数字Id和配置的Name；点击事件为点击预览和点击定位SO文件；</p>
+<p>CurrentActiveItem显示：SO配置的Image和Name、SO的路径；</p>
+<p>接下来明确SO管理<code>Items</code>的数据结构：<code>Dictionary&lt;string, ScriptableObject&gt;</code>，其中，key为SO的guid，方便点击按钮定位对应文件。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>首先创建一个EditorWindow，里面有一个View，还要为View创建对应的uss文件来绘制元素样式。</p>
+<p>源码参考RPG Maker Unite。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">public class DataHierarchyWindow : EditorWindow</span><br><span class="line">&#123;</span><br><span class="line">    private DataHierarchyView m_View;</span><br><span class="line"></span><br><span class="line">    public DataHierarchyView View</span><br><span class="line">    &#123;</span><br><span class="line">        get =&gt; m_View;</span><br><span class="line">        set</span><br><span class="line">        &#123;</span><br><span class="line">            m_View = value;</span><br><span class="line">            if (m_View != null)</span><br><span class="line">            &#123;</span><br><span class="line">                rootVisualElement.Add(m_View);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [MenuItem(&quot;DataHierarchy/DataHierarchy&quot;)]</span><br><span class="line">    public static void OpenGraphWindow()</span><br><span class="line">    &#123;</span><br><span class="line">        DataHierarchyWindow window = GetWindow&lt;DataHierarchyWindow&gt;();</span><br><span class="line">        window.titleContent = new(&quot;DataHierarchy&quot;);</span><br><span class="line">        window.minSize = new Vector2(318, 578);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void OnDestroy()</span><br><span class="line">    &#123;</span><br><span class="line">        m_View.Dispose();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在View里先绘制一个ScrollView：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class DataHierarchyView : VisualElement, IDisposable</span><br><span class="line">&#123;</span><br><span class="line">    private readonly ScrollView m_scrollView;</span><br><span class="line"></span><br><span class="line">    public DataHierarchyView()</span><br><span class="line">    &#123;</span><br><span class="line">        m_scrollView = new ScrollView(ScrollViewMode.Vertical);</span><br><span class="line">        Add(m_scrollView);</span><br><span class="line">        RefreshCatalogueContent();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再在View里绘制预览区域，它与ScrollView同层级：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">private readonly VisualElement m_PreviewContainer;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    m_PreviewContainer = new()</span><br><span class="line">    &#123;</span><br><span class="line">        name = &quot;preview&quot;</span><br><span class="line">    &#125;;</span><br><span class="line">    Add(m_PreviewContainer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据思路，预览区域存在一个Icon和一个Container，Container里存在两个Label：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">private readonly Image m_Icon;</span><br><span class="line">private readonly VisualElement m_TextContainer;</span><br><span class="line">private readonly Label m_TitleLabel;</span><br><span class="line">private readonly Label m_PathLabel;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    m_PreviewContainer.Add(m_Icon);</span><br><span class="line">    m_PreviewContainer.Add(m_TextContainer);</span><br><span class="line">    m_TitleLabel = new()</span><br><span class="line">    &#123;</span><br><span class="line">        name = &quot;title&quot;,</span><br><span class="line">    &#125;;</span><br><span class="line">    m_PathLabel = new()</span><br><span class="line">    &#123;</span><br><span class="line">        name = &quot;path&quot;,</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    m_TextContainer.Add(m_TitleLabel);</span><br><span class="line">    m_TextContainer.Add(m_PathLabel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>假设Catalog有三个类型：Item, Weapon, Armor，对应ItemSO, WeaponSO, ArmorSO;</p>
+<p>前面提到SO管理<code>Items</code>的数据结构是<code>Dictionary&lt;string, ScriptableObject&gt;</code>，</p>
+<p>那么ScrollView的内容的数据类型为<code>Dictionary&lt;ItemCatalog, List&lt;string&gt;&gt;</code>；其中，key为guid的集合。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public void RefreshCatalogueContent()</span><br><span class="line">&#123;</span><br><span class="line">    m_scrollView.Clear();</span><br><span class="line">    CreateCatalogueContent();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void CreateCatalogueContent()</span><br><span class="line">&#123;</span><br><span class="line">    Dictionary&lt;ItemCatalog, List&lt;string&gt;&gt; dic = Items</span><br><span class="line">        .OrderBy(x =&gt; x.Value.Id)</span><br><span class="line">        .GroupBy(x =&gt; x.Value.Catalog)</span><br><span class="line">        .ToDictionary(</span><br><span class="line">        g =&gt; g.Key,</span><br><span class="line">        g =&gt; g.Select(x =&gt; x.Key).ToList()</span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>遍历字典，创建UIElement：根据Catalog创建FoldOut，根据SO配置的Catalog，创建Button，创建在相应的Foldout下；通过将guid赋值给Button的viewDataKey，在之后实现点击定位到对应SO文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">    &#123;</span><br><span class="line">        foreach (var kvp in dic)</span><br><span class="line">        &#123;</span><br><span class="line">            Foldout foldout = new()</span><br><span class="line">            &#123;</span><br><span class="line">                text = kvp.Key.ToString()</span><br><span class="line">            &#125;;</span><br><span class="line">            foreach (var v in kvp.Value)</span><br><span class="line">            &#123;</span><br><span class="line">                Button button = new()</span><br><span class="line">                &#123;</span><br><span class="line">                    text = Items[v].Id + &quot;. &quot; + Items[v].Name,</span><br><span class="line">                    viewDataKey = v,</span><br><span class="line">                &#125;;</span><br><span class="line">                button.clickable.clicked += () =&gt; &#123; SetActiveItem(button); &#125;;</span><br><span class="line">                button.AddToClassList(&quot;selectableElement&quot;);</span><br><span class="line">                foldout.Add(button);</span><br><span class="line">            &#125;</span><br><span class="line">            m_scrollView.contentContainer.Add(foldout);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了实现点击预览功能，需要将点击的Button设置为<code>currentActiveItem</code>，通过Button的viewDataKey，在<code>Items</code>中查找<code>currentActiveItem</code>的Name和Icon，在预览区域显示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">private static VisualElement currentActiveItem;</span><br><span class="line"></span><br><span class="line">private void SetActiveItem(VisualElement item)</span><br><span class="line">&#123;</span><br><span class="line">    DeactivateAllItems();</span><br><span class="line">    currentActiveItem = item;</span><br><span class="line">    currentActiveItem.AddToClassList(&quot;active&quot;);</span><br><span class="line">    SelectAssetInProject();</span><br><span class="line">    UpdateItemPreview();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void DeactivateAllItems()</span><br><span class="line">&#123;</span><br><span class="line">    this.Query&lt;Foldout&gt;().ForEach(f =&gt; &#123; f.RemoveFromClassList(&quot;active&quot;); &#125;);</span><br><span class="line">    this.Query&lt;Button&gt;().ForEach(f =&gt; &#123; f.RemoveFromClassList(&quot;active&quot;); &#125;);</span><br><span class="line">    this.Query&lt;Label&gt;().ForEach(f =&gt; &#123; f.RemoveFromClassList(&quot;active&quot;); &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void UpdateItemPreview()</span><br><span class="line">&#123;</span><br><span class="line">    string key = currentActiveItem.viewDataKey;</span><br><span class="line">    m_TitleLabel.text = Items[key].Name;</span><br><span class="line">    m_Icon.sprite = Items[key].Icon;</span><br><span class="line">    string path = AssetDatabase.GUIDToAssetPath(currentActiveItem.viewDataKey);</span><br><span class="line">    m_PathLabel.text = path;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了美观，可以配置uss样式，为Button的元素类<code>hover</code>和<code>active</code>配置悬浮态和选中态颜色：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.unity-button:hover &#123;</span><br><span class="line">    background-color: rgba(48, 48, 48, 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.unity-button.active &#123;</span><br><span class="line">    background-color: rgba(44, 93, 135, 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样，也可以为preview区域配置对应的uss样式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">DataHierarchyView </span><br><span class="line">&#123;</span><br><span class="line">    height: 100%;</span><br><span class="line">    width : 100%;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">DataHierarchyView &gt; .unity-scroll-view</span><br><span class="line">&#123;</span><br><span class="line">    flex-grow: 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">DataHierarchyView &gt; #preview</span><br><span class="line">&#123;</span><br><span class="line">    align-self: stretch;</span><br><span class="line">    height: 100px;</span><br><span class="line">    background-color: rgba(49,49,49,1);</span><br><span class="line"></span><br><span class="line">    justify-content: flex-start;</span><br><span class="line">    align-items: stretch;</span><br><span class="line">    flex-direction: row;</span><br><span class="line">    padding: 16px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">DataHierarchyView &gt; #preview &gt; #icon</span><br><span class="line">&#123;</span><br><span class="line">    width : 64px;</span><br><span class="line">    height: 64px;</span><br><span class="line">    background-color : #E1E1E1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">DataHierarchyView &gt; #preview &gt; #container</span><br><span class="line">&#123;</span><br><span class="line">    flex: 1 1 auto;</span><br><span class="line">    margin-left: 16px;</span><br><span class="line">    flex-direction: column;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将uss样式添加到View类的方法是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public DataHierarchyView()</span><br><span class="line">&#123;</span><br><span class="line">    styleSheets.Add(Resources.Load&lt;StyleSheet&gt;(&quot;Styles/DataHierarchyView&quot;));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后再做一下点击按钮，在Project面板中定位到对应SO文件的功能：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private void SelectAssetInProject()</span><br><span class="line">&#123;</span><br><span class="line">    string path = AssetDatabase.GUIDToAssetPath(currentActiveItem.viewDataKey);</span><br><span class="line">    UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath&lt;UnityEngine.Object&gt;(path);</span><br><span class="line">    EditorGUIUtility.PingObject(obj);</span><br><span class="line">    Selection.activeObject = obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里基本就完成了，但还有一个问题：打开管理菜单的时候，如果变更了SO的配置，要怎么更新？其实只需要在创建一个Action，订阅事件，在SO类的<code>OnValidate</code>方法回调就好。</p>
+<p><code>  &#123;            SO.OnSOModified += RefreshCatalogueContent;         SO.OnSOModified += UpdateItemPreview;     &#125;</code></p>
+<p>需要注意的是，OnValidate的定义是<strong>加载脚本后或检视面板中的值发生更改时，将调用此函数</strong>，为了只在值发生更改时回调，可以在OnValidate方法中加一个判断：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class SO : ScriptableObject</span><br><span class="line">&#123;</span><br><span class="line">    public static Action OnSOModified;</span><br><span class="line">        </span><br><span class="line">    private bool firstOnValidateHasOccurred;</span><br><span class="line">    </span><br><span class="line">    private void OnValidate()</span><br><span class="line">    &#123;</span><br><span class="line">        if (!firstOnValidateHasOccurred)</span><br><span class="line">        &#123;</span><br><span class="line">            firstOnValidateHasOccurred = true;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        OnSOModified?.Invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>除此之外，管理菜单还要考虑几个问题：如何把所有SO添加到<code>Items</code>中；管理菜单打开状态下，创建和删除了SO，如何处理。暂时不一一赘述了。</p>
+<p>最终效果如图：</p>
+
+
+<h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2021.1/Manual/UIElements.html">UI Toolkit</a></p>
+<p><a target="_blank" rel="noopener" href="https://discussions.unity.com/t/i-want-onvalidate-to-only-run-when-altering-inspector-but-it-runs-during-several-other-instances/915192/11">FirstOnValidateHasOccurred</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+              <a href="/tags/UnityEditor/" rel="tag"># UnityEditor</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Marking-Addressable-Automatically/" rel="prev" title="导入Asset时自动标记Addressable">
+                  <i class="fa fa-angle-left"></i> 导入Asset时自动标记Addressable
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">KuuhakuMirai</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
