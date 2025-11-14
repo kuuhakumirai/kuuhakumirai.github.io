@@ -27,12 +27,16 @@
 <meta property="og:site_name" content="Memo of the Stars">
 <meta property="og:description" content="需求Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将SO列表化，预览内容，点击定位到对应SO文件。 思路参考RPG Maker Unite的数据库">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kuuhakumirai.github.io/.io//Example-1.png">
+<meta property="og:image" content="https://kuuhakumirai.github.io/.io//Example-3.png">
+<meta property="og:image" content="https://kuuhakumirai.github.io/.io//Example-4.png">
 <meta property="article:published_time" content="2025-11-14T17:11:17.000Z">
 <meta property="article:modified_time" content="2025-11-14T17:11:17.000Z">
 <meta property="article:author" content="KuuhakuMirai">
 <meta property="article:tag" content="Unity">
 <meta property="article:tag" content="UnityEditor">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kuuhakumirai.github.io/.io//Example-1.png">
 
 
 <link rel="canonical" href="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/">
@@ -206,13 +210,13 @@
     
     <div class="post-body" itemprop="articleBody"><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将SO列表化，预览内容，点击定位到对应SO文件。</p>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>参考RPG Maker Unite的数据库样式：</p>
-
+<img src="/.io//Example-1.png" class>
 
 <p>思路如图：</p>
 
 
 <p>要管理的SO的属性：Id, Name, Icon, Catalog, 其中Catalog有三个枚举值：Item, Weapon, Armor:</p>
-
+<img src="/.io//Example-3.png" class>
 
 <p>折叠项显示：配置的Catalog，SO根据Catalog分类；</p>
 <p>菜单项显示：SO的数字Id和配置的Name；点击事件为点击预览和点击定位SO文件；</p>
@@ -254,13 +258,14 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private void SelectAssetInProject()</span><br><span class="line">&#123;</span><br><span class="line">    string path = AssetDatabase.GUIDToAssetPath(currentActiveItem.viewDataKey);</span><br><span class="line">    UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath&lt;UnityEngine.Object&gt;(path);</span><br><span class="line">    EditorGUIUtility.PingObject(obj);</span><br><span class="line">    Selection.activeObject = obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>到这里基本就完成了，但还有一个问题：打开管理菜单的时候，如果变更了SO的配置，要怎么更新？其实只需要在创建一个Action，订阅事件，在SO类的<code>OnValidate</code>方法回调就好。</p>
-<p><code>  &#123;            SO.OnSOModified += RefreshCatalogueContent;         SO.OnSOModified += UpdateItemPreview;     &#125;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;   </span><br><span class="line">    SO.OnSOModified += RefreshCatalogueContent;</span><br><span class="line">    SO.OnSOModified += UpdateItemPreview;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>需要注意的是，OnValidate的定义是<strong>加载脚本后或检视面板中的值发生更改时，将调用此函数</strong>，为了只在值发生更改时回调，可以在OnValidate方法中加一个判断：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class SO : ScriptableObject</span><br><span class="line">&#123;</span><br><span class="line">    public static Action OnSOModified;</span><br><span class="line">        </span><br><span class="line">    private bool firstOnValidateHasOccurred;</span><br><span class="line">    </span><br><span class="line">    private void OnValidate()</span><br><span class="line">    &#123;</span><br><span class="line">        if (!firstOnValidateHasOccurred)</span><br><span class="line">        &#123;</span><br><span class="line">            firstOnValidateHasOccurred = true;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        OnSOModified?.Invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>除此之外，管理菜单还要考虑几个问题：如何把所有SO添加到<code>Items</code>中；管理菜单打开状态下，创建和删除了SO，如何处理。暂时不一一赘述了。</p>
 <p>最终效果如图：</p>
-
+<img src="/.io//Example-4.png" class>
 
 <h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2021.1/Manual/UIElements.html">UI Toolkit</a></p>
 <p><a target="_blank" rel="noopener" href="https://discussions.unity.com/t/i-want-onvalidate-to-only-run-when-altering-inspector-but-it-runs-during-several-other-instances/915192/11">FirstOnValidateHasOccurred</a></p>
