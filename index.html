@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="google-site-verification" content="2EOmH2vqAQToOSNCcEn_2fVtZ6AXK-8bGfc7LWLDCcU" />
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/32px-MENU_ItemIcon_03200.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/32px-MENU_ItemIcon_03200.png">
@@ -199,13 +199,13 @@
     <div class="post-body" itemprop="articleBody">
           <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将SO列表化，预览内容，点击定位到对应SO文件。</p>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>参考RPG Maker Unite的数据库样式：</p>
-<img src="/.io//Example-1.png" class>
+<img src="/ScriptableObject-Manage-Tool/Example-1.png" class="">
 
 <p>思路如图：</p>
-<img src="/.io//Example-2.jpg" class>
+<img src="/ScriptableObject-Manage-Tool/Example-2.jpg" class="">
 
 <p>要管理的SO的属性：Id, Name, Icon, Catalog, 其中Catalog有三个枚举值：Item, Weapon, Armor:</p>
-<img src="/.io//Example-3.png" class>
+<img src="/ScriptableObject-Manage-Tool/Example-3.png" class="">
 
 <p>折叠项显示：配置的Catalog，SO根据Catalog分类；</p>
 <p>菜单项显示：SO的数字Id和配置的Name；点击事件为点击预览和点击定位SO文件；</p>
@@ -254,7 +254,7 @@
 
 <p>除此之外，管理菜单还要考虑几个问题：如何把所有SO添加到<code>Items</code>中；管理菜单打开状态下，创建和删除了SO，如何处理。暂时不一一赘述了。</p>
 <p>最终效果如图：</p>
-<img src="/.io//Example-4.png" class>
+<img src="/ScriptableObject-Manage-Tool/Example-4.png" class="">
 
 <h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2021.1/Manual/UIElements.html">UI Toolkit</a></p>
 <p><a target="_blank" rel="noopener" href="https://discussions.unity.com/t/i-want-onvalidate-to-only-run-when-altering-inspector-but-it-runs-during-several-other-instances/915192/11">FirstOnValidateHasOccurred</a></p>
@@ -660,7 +660,7 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>使用Unity旧版本中创建的项目，将编辑器升级到Unity6后，TextMeshPro文字变成白块。</p>
-<img src="/.io//Example.png" class>
+<img src="/TMP-white-blocks/Example.png" class="">
 
 
 <h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>TextMeshPro使用SDF Shader来渲染，新版本Shader文件计算粗体和缩放所使用的向量分量与旧版本不同。</p>

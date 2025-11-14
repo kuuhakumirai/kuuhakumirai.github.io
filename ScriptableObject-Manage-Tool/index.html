@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="google-site-verification" content="2EOmH2vqAQToOSNCcEn_2fVtZ6AXK-8bGfc7LWLDCcU" />
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/32px-MENU_ItemIcon_03200.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/32px-MENU_ItemIcon_03200.png">
@@ -27,17 +27,17 @@
 <meta property="og:site_name" content="Memo of the Stars">
 <meta property="og:description" content="需求Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将SO列表化，预览内容，点击定位到对应SO文件。 思路参考RPG Maker Unite的数据库">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kuuhakumirai.github.io/.io//Example-1.png">
-<meta property="og:image" content="https://kuuhakumirai.github.io/.io//Example-2.jpg">
-<meta property="og:image" content="https://kuuhakumirai.github.io/.io//Example-3.png">
-<meta property="og:image" content="https://kuuhakumirai.github.io/.io//Example-4.png">
+<meta property="og:image" content="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/Example-1.png">
+<meta property="og:image" content="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/Example-2.jpg">
+<meta property="og:image" content="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/Example-3.png">
+<meta property="og:image" content="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/Example-4.png">
 <meta property="article:published_time" content="2025-11-14T17:11:17.000Z">
 <meta property="article:modified_time" content="2025-11-14T17:11:17.000Z">
 <meta property="article:author" content="KuuhakuMirai">
 <meta property="article:tag" content="Unity">
 <meta property="article:tag" content="UnityEditor">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kuuhakumirai.github.io/.io//Example-1.png">
+<meta name="twitter:image" content="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/Example-1.png">
 
 
 <link rel="canonical" href="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/">
@@ -211,13 +211,13 @@
     
     <div class="post-body" itemprop="articleBody"><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将SO列表化，预览内容，点击定位到对应SO文件。</p>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>参考RPG Maker Unite的数据库样式：</p>
-<img src="/.io//Example-1.png" class>
+<img src="/ScriptableObject-Manage-Tool/Example-1.png" class="">
 
 <p>思路如图：</p>
-<img src="/.io//Example-2.jpg" class>
+<img src="/ScriptableObject-Manage-Tool/Example-2.jpg" class="">
 
 <p>要管理的SO的属性：Id, Name, Icon, Catalog, 其中Catalog有三个枚举值：Item, Weapon, Armor:</p>
-<img src="/.io//Example-3.png" class>
+<img src="/ScriptableObject-Manage-Tool/Example-3.png" class="">
 
 <p>折叠项显示：配置的Catalog，SO根据Catalog分类；</p>
 <p>菜单项显示：SO的数字Id和配置的Name；点击事件为点击预览和点击定位SO文件；</p>
@@ -266,7 +266,7 @@
 
 <p>除此之外，管理菜单还要考虑几个问题：如何把所有SO添加到<code>Items</code>中；管理菜单打开状态下，创建和删除了SO，如何处理。暂时不一一赘述了。</p>
 <p>最终效果如图：</p>
-<img src="/.io//Example-4.png" class>
+<img src="/ScriptableObject-Manage-Tool/Example-4.png" class="">
 
 <h2 id="文档链接"><a href="#文档链接" class="headerlink" title="文档链接"></a>文档链接</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2021.1/Manual/UIElements.html">UI Toolkit</a></p>
 <p><a target="_blank" rel="noopener" href="https://discussions.unity.com/t/i-want-onvalidate-to-only-run-when-altering-inspector-but-it-runs-during-several-other-instances/915192/11">FirstOnValidateHasOccurred</a></p>
