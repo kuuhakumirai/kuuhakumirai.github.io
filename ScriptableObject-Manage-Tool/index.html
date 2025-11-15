@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"kuuhakumirai.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":null,"post_block":null,"post_header":null,"post_body":null,"coll_header":null,"sidebar":"fadeInDown"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="需求Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将要管理的SO列表化，预览内容，点击定位到对应SO文件。 思路参考RPG Maker Unite">
+    <meta name="description" content="需求Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将要管理的SO列表化，预览内容，点击定位到对应SO文件。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ScriptableObject管理工具">
 <meta property="og:url" content="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/index.html">
 <meta property="og:site_name" content="Memo of the Stars">
-<meta property="og:description" content="需求Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将要管理的SO列表化，预览内容，点击定位到对应SO文件。 思路参考RPG Maker Unite">
+<meta property="og:description" content="需求Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将要管理的SO列表化，预览内容，点击定位到对应SO文件。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/Example-1.png">
 <meta property="og:image" content="https://kuuhakumirai.github.io/ScriptableObject-Manage-Tool/Example-2.jpg">
@@ -210,6 +210,8 @@
     
     
     <div class="post-body" itemprop="articleBody"><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>Unity原生的Inspector对ScriptableObject的支持不是太好，如果把SO命名为数字Id，或是为SO配置Image，都难以预览，更好的方法是为SO专门重写一个Inspector，但太过复杂，于是参考RPG Maker Unite的数据库菜单，使用UI Toolkit写一个小窗口，将要管理的SO列表化，预览内容，点击定位到对应SO文件。</p>
+<span id="more"></span>
+
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>参考RPG Maker Unite的数据库样式：</p>
 <img src="/ScriptableObject-Manage-Tool/Example-1.png" class="">
 
