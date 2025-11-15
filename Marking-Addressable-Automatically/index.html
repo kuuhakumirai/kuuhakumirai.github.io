@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"kuuhakumirai.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":null,"post_block":null,"post_header":null,"post_body":null,"coll_header":null,"sidebar":"fadeInDown"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="需求就算可以批量勾选Addressable并管理分组，也希望有一个自动化工具，可以在导入Asset的时候就标记Addressable并根据所在文件夹分组。 于是用到AssetPostprocessor。 解决方案思路如下：  使用OnPostprocessAllAssets函数，遍历importedAssets，判定Asset所在路径；  获取Asset的AddressableAssetEntry">
+    <meta name="description" content="需求就算可以批量勾选Addressable并管理分组，也希望有一个自动化工具，可以在导入Asset的时候就标记Addressable并根据所在文件夹分组。 于是用到AssetPostprocessor。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="导入Asset时自动标记Addressable">
 <meta property="og:url" content="https://kuuhakumirai.github.io/Marking-Addressable-Automatically/index.html">
 <meta property="og:site_name" content="Memo of the Stars">
-<meta property="og:description" content="需求就算可以批量勾选Addressable并管理分组，也希望有一个自动化工具，可以在导入Asset的时候就标记Addressable并根据所在文件夹分组。 于是用到AssetPostprocessor。 解决方案思路如下：  使用OnPostprocessAllAssets函数，遍历importedAssets，判定Asset所在路径；  获取Asset的AddressableAssetEntry">
+<meta property="og:description" content="需求就算可以批量勾选Addressable并管理分组，也希望有一个自动化工具，可以在导入Asset的时候就标记Addressable并根据所在文件夹分组。 于是用到AssetPostprocessor。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-11-04T12:27:11.000Z">
 <meta property="article:modified_time" content="2025-11-04T12:27:11.000Z">
@@ -206,6 +206,8 @@
     
     <div class="post-body" itemprop="articleBody"><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>就算可以批量勾选Addressable并管理分组，也希望有一个自动化工具，可以在导入Asset的时候就标记Addressable并根据所在文件夹分组。</p>
 <p>于是用到<code>AssetPostprocessor</code>。</p>
+<span id="more"></span>
+
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>思路如下：</p>
 <ol>
 <li><p>使用<code>OnPostprocessAllAssets</code>函数，遍历<code>importedAssets</code>，判定Asset所在路径；</p>
