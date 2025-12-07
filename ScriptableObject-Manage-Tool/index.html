@@ -260,7 +260,7 @@
 <p>最后再做一下点击按钮，在Project面板中定位到对应SO文件的功能：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private void SelectAssetInProject()</span><br><span class="line">&#123;</span><br><span class="line">    string path = AssetDatabase.GUIDToAssetPath(currentActiveItem.viewDataKey);</span><br><span class="line">    UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath&lt;UnityEngine.Object&gt;(path);</span><br><span class="line">    EditorGUIUtility.PingObject(obj);</span><br><span class="line">    Selection.activeObject = obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>到这里基本就完成了，但还有一个问题：打开管理菜单的时候，如果变更了SO的配置，要怎么更新？其实只需要在创建一个Action，订阅事件，在SO类的<code>OnValidate</code>方法回调就好。</p>
+<p>到这里基本就完成了，但还有一个问题：打开管理菜单的时候，如果变更了SO的配置，要怎么更新？其实只需要再创建一个Action，订阅事件，在SO类的<code>OnValidate</code>方法回调就好。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;   </span><br><span class="line">    SO.OnSOModified += RefreshCatalogueContent;</span><br><span class="line">    SO.OnSOModified += UpdateItemPreview;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>需要注意的是，OnValidate的定义是<strong>加载脚本后或检视面板中的值发生更改时，将调用此函数</strong>，为了只在值发生更改时回调，可以在OnValidate方法中加一个判断：</p>
